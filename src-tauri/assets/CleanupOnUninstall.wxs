@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix
+	xmlns="http://schemas.microsoft.com/wix/2006/wi"
+    xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
+    >
+ <Fragment>
+ <Property Id="LOCALAPPDATAFOLDER">
+     <RegistrySearch Key="Software\tauriapp\Tauri" Root="HKCU" Type="raw"
+                     Id="CacheFolderRegSearch" Name="LocalAppDataFolder" />
+    </Property>
+        <DirectoryRef Id="TARGETDIR">
+            <Component Id="CleanupAppFolder" Guid="*">
+                <util:RemoveFolderEx Id="RemoveAppFolder" On="uninstall" Property="LOCALAPPDATAFOLDER" />
+                <RegistryKey Root="HKCU" Key="Software\tauriapp\Tauri" ForceCreateOnInstall="yes"
+          ForceDeleteOnUninstall="yes">
+                    <RegistryValue Name="LocalAppDataFolder" Type="string" Value="[LocalAppDataFolder]dev.tauriapp.desktop" />
+                </RegistryKey>
+                <CreateFolder />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+</Wix>
